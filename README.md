@@ -1,18 +1,30 @@
-# NMAP_Beafutifier
-<hr>
+# NMAP_Beautifier
 Nmap output with color to make easier to read 
 
-some shitty code :p i'll make changes later
 <hr>
 
 ## Instalation
 
-> git clone https://github.com/Vondri/NMAP_Beaufitier && cd NMAP_Beaufitier
-> 
-> g++ main.cpp -o main
+```
+git clone https://github.com/Vondri/NMAP_Beautifier
+cd NMAP_Beautifier
+sudo chmod +x ./build.sh
+sudo ./build.sh
+```
+
+**And that's all!**
+
+<hr>
 
 ## Example usage
 
-> sudo nmap -sC -sV -T5 --min-rate=300 127.0.0.1 | ./main
+All what you need is add at the end pipe to nmap_beautfier just like this: `nmap -sC -sV -T5 --min-rate=300 127.0.0.1 | nmap_beautifier`
 
-![image](https://github.com/Vondri/NMAP_Beafutifier/assets/56918032/9c191340-f5c8-4df5-9c2a-17ed0309302d)
+<hr>
+
+## Result
+
+![image](https://github.com/Vondri/NMAP_Beaufitier/assets/56918032/18db9670-463d-49ab-a554-59fa9df145a4)
+
+## Troubleshoting
+If you have any problem create [new thread](https://github.com/Vondri/NMAP_Beaufitier/issues/new/choose) in issue selection ;)
