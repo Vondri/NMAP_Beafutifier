@@ -6,6 +6,12 @@
 #include <algorithm>
 #include <bits/stdc++.h>
 
+#include <stdio.h>
+#include <unistd.h>
+
+
+using namespace std;
+
 namespace Color {
 	enum Code {
 		FG_LIME = 46,
@@ -27,89 +33,60 @@ namespace Color {
 		FG_PINK = 219,
 		FG_LIGHTPINK = 201
 	};
-	class Mod {
-	public:
-		Code code;
-		Mod(Code _code) : code(_code) {}
-		friend std::ostream& operator<<(std::ostream& os, const Mod& mod){
-			return os << "\33[38;5;" << mod.code << "m";
-		}
-		
-	};
 }
-
-std::vector<size_t> get_pos(std::string& str, std::string str_to_find){
-	std::vector<size_t> pos_vec;
-	size_t pos = str.find(str_to_find, 0);
-	while(pos != std::string::npos){
-		pos_vec.push_back(pos);
-		pos = str.find(str_to_find, pos+1);
-	}
-	return pos_vec;
-}
-
-
 
 int main(int argc, char* argv[]) {
-	Color::Mod open(Color::FG_LIME);
-	Color::Mod filtered(Color::FG_YELLOW);
-	Color::Mod closed(Color::FG_RED);
-	Color::Mod pink(Color::FG_PURPLE);
-	std::string def = "\33[0m";
+	if(isatty(fileno(stdin))){
+		std::cout << "You can run this only using pipe!";
+		return 1;
+	}
+	
+	string open = "\33[38;5;" + to_string(Color::FG_LIME) + "m";
+	string filtered = "\33[38;5;" + to_string(Color::FG_YELLOW) + "m";
+	string closed ="\33[38;5;" + to_string(Color::FG_RED) + "m";
+	string pink = "\33[38;5;" + to_string(Color::FG_PURPLE) + "m";
+	string def = "\33[0m";
 
 	int c;
-	std::string x = "";
-	while((c = getc(stdin)) != EOF) {
-	//	std::cout << open << char(c) << "\33[0m";
-		x += char(c);
-	}
+	string sScanOutput = "";
+	while((c = getc(stdin)) != EOF) { sScanOutput += char(c); }
 
 	
-	std::string line;
-	std::stringstream X(x);
+	string line;
+	stringstream ssScanOutput(sScanOutput);
 	bool firstChar = true;
-	while(getline(X, line, '\n')){
-		//std::cout << line << std::endl;
-		//std::cout << "--------------------------------------" << std::endl;
-		if(line.find("open") != std::string::npos){
-			std::cout << open << line << def << std::endl; 
+	while(getline(ssScanOutput, line, '\n')){
+		if(line.find("open") != string::npos){
+			cout << open << line << def << endl; 
 			continue;
 		}  
 
-		if(line.find("filtered") != std::string::npos){
-			std::cout << filtered << line << def << std::endl;
+		if(line.find("filtered") != string::npos){
+			cout << filtered << line << def << endl;
 			continue;
 		}  
 		size_t pos1 = line.find("|");
 		size_t pos2 = line.find(":");
-		std::vector<char> v = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+		vector<char> v = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
 						  '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
 						  '-', '_', '=', '+', '[', ']', '{', '}', '\\', '|',
 						  ';', ':', '\'', '"', ',', '<', '.', '>', '/', '?',
 						  '`', '~'};
-		if((line.find("|") != std::string::npos) && (line.find(":") != std::string::npos)){
-			//std::cout << line << std::endl;
+		if((line.find("|") != string::npos) && (line.find(":") != string::npos)){
 			firstChar = true;
 			for(int i = 0; i < line.size(); i++){
-
-				
-				
-				if(i >= pos1 && i <= pos2 && firstChar == false && line.find("(RSA)") == std::string::npos && line.find("(ECDSA)") == std::string::npos && line.find("(ED25519)") == std::string::npos){
-					std::cout << pink << line[i] << def;
+				if(i >= pos1 && i <= pos2 && firstChar == false && line.find("(RSA)") == string::npos && line.find("(ECDSA)") == string::npos && line.find("(ED25519)") == string::npos){
+					cout << pink << line[i] << def;
 				} else {
-					std::cout << def << line[i];
+					cout << def << line[i];
 				}
 				firstChar = false;
 			}
-			std::cout << std::endl;
+			cout << endl;
 			continue;
 		} else {
-			std::cout << def << line << std::endl;
+			cout << def << line << endl;
 		}
-		//std::cout << pos1 << " " << pos2 << std::endl;
-		//std::cout << def << line << std::endl; 
-		
 	}
-	
 	return 0;
 }
